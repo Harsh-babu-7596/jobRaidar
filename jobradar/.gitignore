@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Secrets and local configuration
+.env
+*.key
+*.pem
+credentials*.json
+token*.json
+
+# Local data and logs
+backend/data/*
+!backend/data/.gitkeep
+backend/logs/*
+!backend/logs/.gitkeep
+
+# Frontend
+node_modules/
+dist/
+build/
+.env.local
