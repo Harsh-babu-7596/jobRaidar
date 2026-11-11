@@ -1,43 +1,23 @@
 # JobRadar
 
-Local job-discovery platform with a Python/FastAPI backend, scheduled ATS scrapers,
-SQLite storage, and planned Google Sheets + React interfaces.
+Local resume-aware job discovery: scrape company career boards, match openings to keywords from your resume, and browse results in a Radar Console UI.
 
-## Windows 10/11 quick start
+**Full setup and usage guide:** [`jobradar/README.md`](jobradar/README.md)
 
-Requirements:
-- Python 3.11 or newer
-- PowerShell 5.1+ or PowerShell 7
-- Git (optional)
+## Start here
 
-Open PowerShell in the extracted `JobRadar` folder:
+```bash
+# Terminal 1 — API
+cd jobradar
+./scripts/start-backend.sh
 
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\scripts\setup.ps1
-.\scripts\start.ps1
+# Terminal 2 — UI
+./scripts/start-frontend.sh
 ```
 
 Then open:
-- API documentation: http://127.0.0.1:8000/docs
-- Health check: http://127.0.0.1:8000/health
 
-The backend creates its SQLite database at `backend/data/jobradar.db` and writes logs
-to `backend/logs/jobradar.log`.
+- Console: http://127.0.0.1:5173
+- API docs: http://127.0.0.1:8000/docs
 
-## Current implementation
-
-- Greenhouse public job-board endpoint
-- Lever public postings endpoint
-- SQLAlchemy models and duplicate-safe job upsert
-- FastAPI company and job endpoints
-- 15-minute local scheduler
-- Windows PowerShell setup/start scripts
-
-## Important limitations
-
-- React frontend and Google Sheets sync are not implemented yet.
-- `custom` ATS is an adapter placeholder; individual career sites need dedicated parsers.
-- The scheduler runs only while the backend process is running.
-- Start with a small number of test companies, verify site-specific behavior, then scale.
-- Respect website terms, robots directives, rate limits, and API usage rules.
+**Typical flow:** upload resume → add companies (career URL or Excel) → Scrape now → browse matched jobs.

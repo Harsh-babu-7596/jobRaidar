@@ -9,8 +9,9 @@ from app.config import SCRAPE_INTERVAL_MINUTES
 logger = logging.getLogger(__name__)
 scheduler = BackgroundScheduler(timezone="UTC")
 
-def scrape_all_companies():
+def scrape_all_companies() -> list[dict]:
     db = SessionLocal()
+    results: list[dict] = []
     try:
         companies = db.scalars(
             select(Company).where(Company.active.is_(True))
@@ -19,9 +20,19 @@ def scrape_all_companies():
             try:
                 result = scrape_company(db, company)
                 logger.info("Scrape result: %s", result)
-            except Exception:
+                results.append(result)
+            except Exception as exc:
                 db.rollback()
                 logger.exception("Failed scraping %s", company.name)
+                results.append({
+                    "company": company.name,
+                    "fetched": 0,
+                    "inserted": 0,
+                    "updated": 0,
+                    "status": "failed",
+                    "error": str(exc),
+                })
+        return results
     finally:
         db.close()
 
